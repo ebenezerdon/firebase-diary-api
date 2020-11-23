@@ -35,4 +35,15 @@ const addEntry = async (req: Request, res: Response) => {
   } catch(error) { res.status(500).json(error.message) }
 }
 
-export { addEntry }
+const getAllEntries = async (req: Request, res: Response) => {
+  const { userId } = req.params
+  const allEntries: EntryType[] = []
+
+  try {
+    const querySnapshot = await db.collection('posts').where('userId', '==', userId).get()
+    querySnapshot.forEach((doc: { data: () => any; }) => allEntries.push(doc.data()))
+    return res.status(200).json(allEntries)
+  } catch(error) { return res.status(500).json(error.message) }
+}
+
+export { addEntry, getAllEntries }
