@@ -16,11 +16,9 @@ const isUserAuthorized = async (req: Request, res: Response, next: Function) => 
       await admin.auth().verifyIdToken(token)
     req.params.userId = decodedToken.uid
     return next()
-  } catch (error) {
-    return res.status(401).json({
-      status: 'error',
-      message: 'unauthorized'
-    })
+  }
+  catch (error) {
+    return res.status(401).json(errorMessage)
   }
 }
 
