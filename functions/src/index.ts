@@ -9,7 +9,7 @@ const app = express()
 
 app.get('/', (req, res) => res.status(200).send('Hey there!'))
 app.get('/entries', isUserAuthorized, getAllEntries)
-app.post('/entry', isUserAuthorized, addEntry)
+app.post('/entries', isUserAuthorized, addEntry)
 app.post('/users', createUser)
 app.patch('/entries/:entryId', isUserAuthorized, doesEntryExist, updateEntry)
 app.delete('/entries/:entryId', isUserAuthorized, doesEntryExist, deleteEntry)
