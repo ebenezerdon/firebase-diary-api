@@ -1,15 +1,13 @@
 import { Request, Response } from "express"
 import { admin } from './config/firebase'
 
-const errorMessage = {
-  status: 'error',
-  message: 'user unauthorized'
-}
-
 const isUserAuthorized = async (req: Request, res: Response, next: Function) => {
   const token = req.headers.authorization
 
-  if (!token) return res.status(401).json(errorMessage)
+  if (!token) return res.status(401).json({
+    status: 'error',
+    message: 'user unauthorized'
+  })
 
   try {
     const decodedToken: admin.auth.DecodedIdToken =
@@ -18,7 +16,10 @@ const isUserAuthorized = async (req: Request, res: Response, next: Function) => 
     return next()
   }
   catch (error) {
-    return res.status(401).json(errorMessage)
+    return res.status(401).json({
+      status: 'error',
+      message: error.message
+    })
   }
 }
 
