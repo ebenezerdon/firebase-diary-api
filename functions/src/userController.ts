@@ -9,18 +9,28 @@ type UserType = {
 const createUser = async (req: { body: UserType }, res: Response) => {
   const { email, password } = req.body
 
-  try {
-    await admin.auth().createUser({ email, password }).catch(error => {
-      return res.status(400).json({
-        status: 'error',
-        message: error.message
-      })
+  if (!email || !password) {
+    return res.status(400).send({
+      statusu: 'error',
+      message: 'email and password required'
     })
+  }
+
+  try {
+    const user = await admin.auth().createUser({ email, password })
+    const token = await admin.auth().createCustomToken(user.uid)
+
     return res.status(200).send({
       status: 'success',
       message: 'user created successfully',
+      data: {
+        token
+      }
     })
-  } catch(error) { return res.status(500).json(error.message)}
+  } catch(error) { return res.status(500).json({
+    status: 'error',
+    message: error.message
+  })}
 }
 
 export { createUser }
