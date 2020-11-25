@@ -3,12 +3,14 @@ import * as express from 'express'
 import { isUserAuthorized } from './auth'
 import { addEntry, getAllEntries, updateEntry, deleteEntry } from './entryController'
 import { doesEntryExist } from './entryMiddleware'
+import { createUser } from './userController'
 
 const app = express()
 
 app.get('/', (req, res) => res.status(200).send('Hey there!'))
-app.post('/entry', isUserAuthorized, addEntry)
 app.get('/entries', isUserAuthorized, getAllEntries)
+app.post('/entry', isUserAuthorized, addEntry)
+app.post('/users', createUser)
 app.patch('/entries/:entryId', isUserAuthorized, doesEntryExist, updateEntry)
 app.delete('/entries/:entryId', isUserAuthorized, doesEntryExist, deleteEntry)
 
