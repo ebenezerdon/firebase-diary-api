@@ -11,7 +11,7 @@ const createUser = async (req: { body: UserType }, res: Response) => {
 
   if (!email || !password) {
     return res.status(400).send({
-      statusu: 'error',
+      status: 'error',
       message: 'email and password required'
     })
   }
